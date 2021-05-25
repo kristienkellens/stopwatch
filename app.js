@@ -49,6 +49,7 @@ startBtn.onclick = function () {
 
         timer = setInterval(runTimer, 1000);
 
+
     }
 }
 
@@ -80,10 +81,13 @@ function runTimer() {
         displayMinutes.innerText = minutes.toLocaleString("en-US", { minimumIntegerDigits: 2 });
     }
 
-    //alert if running out of minutes
+    //in case timer goes over 60min, restart count at 00:00
     if (minutes === 60) {
-        alert("Stopwatch can go no further!")
-        //add same as reset button???
+        displaySeconds.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
+        seconds = 0;
+
+        displayMinutes.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
+        minutes = 0;
     }
 
 }
