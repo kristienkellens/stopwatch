@@ -1,69 +1,21 @@
 "use strict";
 
-//console.log("ready");
-
-/***
- * //STEP 1 - START
- * Button start >> seconds ++ UNTIL 60 THEN minutes ++
- * ADDITIONAL: add validation boolean: when clock is running, pressing start btn should have no effect
- *
- * //STEP 2 - STOP
- * Button stop >> PAUSE seconds and minutes
- * Time should still be displayed
- * ??: keep time in variabel for lap?
- *
- * // STEP 3 - RESET
- * set timer back to 00:00 >> clearInterval?
- * set start boolean to false
- * LATER: set lap variable to null
- *
- *
- * STEP 4 - LAP
- * "print" current time to variable
- * HTML/CSS: add div for lap notation
- * add lap to lap list
- * EXTRA: highlight fastest time
- *
- *
- */
-
-/** STEP 1 - START */
+/** GLOBAL VARIABLES */
 let running = false;
 const startBtn = document.querySelector(".btn-start");
 const stopBtn = document.querySelector(".btn-stop");
 const resetBtn = document.querySelector(".btn-reset");
+const lapBtn = document.querySelector(".btn-lap");
 const displaySeconds = document.querySelector(".seconds");
 const displayMinutes = document.querySelector(".minutes");
 let seconds = 0;
 let minutes = 0;
-
+let lapCounter = 0;
+let previousMinutes = 0;
+let previousSeconds = 0;
 let timer; //variable for set/clear Interval
 
-startBtn.onclick = function () {
-    //console.log("start clicked");
-    //validation: has start already been clicked?
-    if (!running) {
-        running = true;
-        timer = setInterval(runTimer, 1000);
-    }
-}
-
-stopBtn.onclick = function () {
-    running = false;
-    clearInterval(timer);
-}
-
-resetBtn.onclick = function () {
-    running = false;
-    clearInterval(timer);
-
-    displaySeconds.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
-    displayMinutes.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
-    seconds = 0;
-    minutes = 0;
-}
-
-
+/** FUNCTIONS **/
 function runTimer() {
     //show seconds
     seconds++;
@@ -86,5 +38,64 @@ function runTimer() {
         displayMinutes.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
         minutes = 0;
     }
+};
 
+
+/** MAIN **/
+startBtn.onclick = function () {
+    if (!running) {
+        running = true;
+        timer = setInterval(runTimer, 1000);
+    }
 }
+
+stopBtn.onclick = function () {
+    running = false;
+    clearInterval(timer);
+}
+
+resetBtn.onclick = function () {
+    window.location.reload();
+}
+
+lapBtn.onclick = function () {
+    lapCounter++;
+
+    //calculate currenttime - previoustime
+    let diffMinutes = displayMinutes.innerText - previousMinutes;
+    let diffSeconds = displaySeconds.innerText - previousSeconds;
+
+
+    //create new li in ul.laps
+    let lapsUl = document.querySelector(".laps");
+    let li = document.createElement('li');
+
+    li.innerText = `Lap ${lapCounter}: ${diffMinutes.toLocaleString("en-US", { minimumIntegerDigits: 2 })} : ${diffSeconds.toLocaleString("en-US", { minimumIntegerDigits: 2 })}`;
+    lapsUl.appendChild(li);
+
+    //make ul.laps visible
+    lapsUl.style.visibility = "visible";
+
+    //change currenttime to previoustime
+    previousMinutes = displayMinutes.innerText;
+    previousSeconds = displaySeconds.innerText;
+
+    //EXTRA: highlight smallest time
+}
+
+function Timer() {
+    let laps = 0;
+    this.start = function () {
+        // hier code van start zetten
+        console.log(laps);
+    }
+}
+
+const stopwatch = new Timer();
+/*
+    button.onclick = function() {
+        stopwatch.start();
+    }
+*/
+
+// onclick vervangen door addEventListener
