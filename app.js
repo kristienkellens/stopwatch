@@ -31,35 +31,40 @@
 let running = false;
 const startBtn = document.querySelector(".btn-start");
 const stopBtn = document.querySelector(".btn-stop");
+const resetBtn = document.querySelector(".btn-reset");
 const displaySeconds = document.querySelector(".seconds");
 const displayMinutes = document.querySelector(".minutes");
 let seconds = 0;
 let minutes = 0;
 
-let
+let timer; //variable for set/clear Interval
 
-    startBtn.onclick = function () {
-        //console.log("start clicked");
-        //validation: has start already been clicked?
-        if (!running) {
-            //console.log("start running");
+startBtn.onclick = function () {
+    //console.log("start clicked");
+    //validation: has start already been clicked?
+    if (!running) {
+        //console.log("start running");
 
-            running = true;
+        running = true;
 
-            setInterval(runTimer, 1000);
+        timer = setInterval(runTimer, 1000);
 
-        } /*else {
-        console.log("already running");
-        //can probably leave out else since no further actions are needed in this case
-    }*/
     }
+}
 
 stopBtn.onclick = function () {
-    console.log("pause the timer")
     running = false;
-    clearInterval(runTimer);
-
+    clearInterval(timer);
 }
+
+resetBtn.onclick = function () {
+    running = false;
+    displaySeconds.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
+    displayMinutes.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
+    seconds = 0;
+    minutes = 0;
+}
+
 
 function runTimer() {
     //show seconds
@@ -67,12 +72,18 @@ function runTimer() {
     displaySeconds.innerText = seconds.toLocaleString("en-US", { minimumIntegerDigits: 2 });
 
     //show minutes
-    if (seconds === 10) {
+    if (seconds === 60) {
         displaySeconds.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
         seconds = 0;
 
         minutes++;
         displayMinutes.innerText = minutes.toLocaleString("en-US", { minimumIntegerDigits: 2 });
+    }
+
+    //alert if running out of minutes
+    if (minutes === 60) {
+        alert("Stopwatch can go no further!")
+        //add same as reset button???
     }
 
 }
