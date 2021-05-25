@@ -60,6 +60,8 @@ stopBtn.onclick = function () {
 
 resetBtn.onclick = function () {
     running = false;
+    clearInterval(timer);
+
     displaySeconds.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
     displayMinutes.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
     seconds = 0;
