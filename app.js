@@ -43,13 +43,8 @@ startBtn.onclick = function () {
     //console.log("start clicked");
     //validation: has start already been clicked?
     if (!running) {
-        //console.log("start running");
-
         running = true;
-
         timer = setInterval(runTimer, 1000);
-
-
     }
 }
 

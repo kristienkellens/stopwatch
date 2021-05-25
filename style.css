@@ -30,3 +30,8 @@ button {
 button:hover {
     color: red;
 }
+
+.laps {
+    list-style-type: none;
+    visibility: hidden;
+}
