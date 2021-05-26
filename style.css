@@ -1,10 +1,28 @@
+@font-face {
+    font-family: Orbitron;
+    src: url(fonts/Orbitron/Orbitron-VariableFont_wght.ttf);
+}
+
+@font-face {
+    font-family: Lato;
+    src: url(fonts/Lato/Lato-Regular.ttf);
+}
+
 body{
     margin: 0;
     padding: 0;
+    font-family: Orbitron;
+    background-color: rgb(27, 27, 27);
 }
 
 h1{
     text-align: center;
+    font-size: 2em;
+    padding: .25em;
+    border: 1px solid rgb(27, 27, 27);
+    border-radius: 20px;
+    background-color: rgb(169, 173, 165);
+
 }
 
 .wrapper {
@@ -21,21 +39,40 @@ h1{
 .time {
     font-size: 3em;
     margin-bottom: .5em;
+    background-color: rgb(27, 27, 27);
+    color: rgb(139, 189, 75);
+    border: 1px dotted rgb(233, 238, 230);
+
 }
 
 button {
-    margin: .2em;
+    margin: .2em .75em;
+    font-family: Lato;
+    padding: .2em .75em;
+    border: 1px solid rgb(27, 27, 27);
+    border-radius: 20px;
+    background-color: rgb(169, 173, 165);
 }
 
 button:hover {
-    color: red;
+    background-color: rgb(27, 27, 27);
+    border: 1px solid rgb(169, 173, 165);
+    color: rgb(174, 179, 169);
 }
 
 .laps {
     list-style-type: none;
-    /*visibility: hidden;*/
+    visibility: hidden;
+    background-color: rgb(27, 27, 27);
+    color: rgb(233, 238, 230);
+    border: 1px dotted rgb(233, 238, 230);
+
+}
+
+.laps li {
+    margin: .5em 0;
 }
 
 .winner {
-    background-color: green;
+    color: rgb(139, 189, 75);
 }
