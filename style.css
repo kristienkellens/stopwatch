@@ -33,5 +33,9 @@ button:hover {
 
 .laps {
     list-style-type: none;
-    visibility: hidden;
+    /*visibility: hidden;*/
+}
+
+.winner {
+    background-color: green;
 }

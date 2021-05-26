@@ -1,5 +1,6 @@
 "use strict";
 
+// global DOM variables
 const startBtn = document.querySelector(".btn-start");
 const stopBtn = document.querySelector(".btn-stop");
 const resetBtn = document.querySelector(".btn-reset");
@@ -14,7 +15,7 @@ function Stopwatch() {
     let running = false;
     let lapCounter = 0;
     let timer; //variable for set/clear Interval
-    let startTime, currentTime, lapTime //variables for date objects
+    let startTime, currentTime, lapTime; //variables for date objects
     let secondsStop = 0;
     let minutesStop = 0;
 
@@ -39,12 +40,12 @@ function Stopwatch() {
     };
 
     this.stop = function () {
-        //stop code here
         running = false;
         clearInterval(timer);
+
+        //keep seconds and minutes for resuming click on start()
         secondsStop = parseInt(displaySeconds.innerText);
         minutesStop = parseInt(displayMinutes.innerText);
-        //console.log(typeof minutesStop, secondsStop)
     };
 
     this.lap = function () {
@@ -62,16 +63,36 @@ function Stopwatch() {
             li.innerText = `Lap ${lapCounter}: ${minutes.toLocaleString("en-US", { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString("en-US", { minimumIntegerDigits: 2 })}`;
             lapsUl.appendChild(li);
 
-            //make ul.laps visible
             lapsUl.style.visibility = "visible";
 
             lapTime = currentTime;
+
+            this.highlightLap();
 
         }
     }
 
     this.reset = function () {
         window.location.reload();
+    }
+
+    this.highlightLap = function () {
+        let items = document.querySelectorAll(".laps li");
+        const lapArray = [];
+
+        for (let i = 0; i < items.length; i++) {
+            let lapText = items[i].innerText;
+            let lapNumber = parseInt(lapText.slice(-5).replace(":", "")); //"Lap x: 01:10" becomes "01:00" becomes "0100" becomes 110
+            //console.log(lapNumber);
+            lapArray.push(lapNumber);
+        }
+
+        let shortestLap = Math.min.apply(null, lapArray);
+        let shortestLapIndex = lapArray.indexOf(shortestLap);
+
+        for (let i = 0; i < items.length; i++) {
+            i === shortestLapIndex ? items[i].classList.add("winner") : items[i].classList.remove("winner");
+        }
     }
 
 }
