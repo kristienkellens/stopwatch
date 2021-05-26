@@ -12,43 +12,29 @@ const displayMinutes = document.querySelector(".minutes");
 function Stopwatch() {
     //properties
     let running = false;
-    let seconds = 0;
-    let minutes = 0;
     let lapCounter = 0;
     let previousMinutes = 0;
     let previousSeconds = 0;
     let timer; //variable for set/clear Interval
+    let startTime, currentTime //variables for date objects
 
     //methods
     this.runTimer = function () {
-        //show seconds
-        seconds++;
+        currentTime = new Date();
+        //time diff in seconds
+        let diffTime = Math.round((currentTime - startTime) / 1000);
+
+        let seconds = diffTime % 60;
+        let minutes = Math.floor(diffTime / 60);
+
         displaySeconds.innerText = seconds.toLocaleString("en-US", { minimumIntegerDigits: 2 });
-
-        //show minutes
-        if (seconds === 60) {
-            displaySeconds.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
-            seconds = 0;
-
-            minutes++;
-            displayMinutes.innerText = minutes.toLocaleString("en-US", { minimumIntegerDigits: 2 });
-        }
-
-        //in case timer goes over 60min, restart count at 00:00
-        if (minutes === 60) {
-            displaySeconds.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
-            seconds = 0;
-
-            displayMinutes.innerText = (0).toLocaleString("en-US", { minimumIntegerDigits: 2 });
-            minutes = 0;
-        }
-
+        displayMinutes.innerText = minutes.toLocaleString("en-US", { minimumIntegerDigits: 2 });
     }
-
 
     this.start = function () {
         if (!running) {
             running = true;
+            startTime = new Date();
             timer = setInterval(this.runTimer, 1000);
         }
     };
@@ -63,11 +49,11 @@ function Stopwatch() {
     this.lap = function () {
         if (running) {
             lapCounter++;
+            console.log(currentTime);
 
             //calculate currenttime - previoustime
             let diffMinutes = displayMinutes.innerText - previousMinutes;
             let diffSeconds = displaySeconds.innerText - previousSeconds;
-
 
             //create new li in ul.laps
             let lapsUl = document.querySelector(".laps");
@@ -87,14 +73,13 @@ function Stopwatch() {
 
     this.reset = function () {
         window.location.reload();
-
     }
 
 }
 
 const stopwatch = new Stopwatch();
 
-startBtn.addEventListener('click', () => { stopwatch.start(); });
+startBtn.addEventListener('click', () => { stopwatch.start() });
 
 stopBtn.addEventListener('click', () => { stopwatch.stop() });
 
