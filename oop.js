@@ -13,10 +13,8 @@ function Stopwatch() {
     //properties
     let running = false;
     let lapCounter = 0;
-    let previousMinutes = 0;
-    let previousSeconds = 0;
     let timer; //variable for set/clear Interval
-    let startTime, currentTime //variables for date objects
+    let startTime, currentTime, lapTime //variables for date objects
 
     //methods
     this.runTimer = function () {
@@ -35,6 +33,7 @@ function Stopwatch() {
         if (!running) {
             running = true;
             startTime = new Date();
+            lapTime = startTime; //for first lap
             timer = setInterval(this.runTimer, 1000);
         }
     };
@@ -42,32 +41,30 @@ function Stopwatch() {
     this.stop = function () {
         //stop code here
         running = false;
-        console.log("stop timer");
+        console.log("stop timer", startTime);
         clearInterval(timer);
     };
 
     this.lap = function () {
         if (running) {
             lapCounter++;
-            console.log(currentTime);
+            let diffTime = Math.round((currentTime - lapTime) / 1000);
 
-            //calculate currenttime - previoustime
-            let diffMinutes = displayMinutes.innerText - previousMinutes;
-            let diffSeconds = displaySeconds.innerText - previousSeconds;
+            let seconds = diffTime % 60;
+            let minutes = Math.floor(diffTime / 60);
 
             //create new li in ul.laps
             let lapsUl = document.querySelector(".laps");
             let li = document.createElement('li');
 
-            li.innerText = `Lap ${lapCounter}: ${diffMinutes.toLocaleString("en-US", { minimumIntegerDigits: 2 })} : ${diffSeconds.toLocaleString("en-US", { minimumIntegerDigits: 2 })}`;
+            li.innerText = `Lap ${lapCounter}: ${minutes.toLocaleString("en-US", { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString("en-US", { minimumIntegerDigits: 2 })}`;
             lapsUl.appendChild(li);
 
             //make ul.laps visible
             lapsUl.style.visibility = "visible";
 
-            //change currenttime to previoustime
-            previousMinutes = displayMinutes.innerText;
-            previousSeconds = displaySeconds.innerText;
+            lapTime = currentTime;
+
         }
     }
 
