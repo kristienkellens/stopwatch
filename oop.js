@@ -8,16 +8,14 @@ const lapBtn = document.querySelector(".btn-lap");
 const displaySeconds = document.querySelector(".seconds");
 const displayMinutes = document.querySelector(".minutes");
 
-
 /** object Stopwatch */
-
 function Stopwatch() {
     let running = false;
     let lapCounter = 0;
     let timer; //variable for set/clear Interval
     let startTime, currentTime, lapTime; //variables for date objects
-    let secondsStop = 0;
-    let minutesStop = 0;
+    let secondsStop = 0; //variable that stores seconds after click on stop
+    let minutesStop = 0; //variable that stores minutes after click on stop
 
     this.runTimer = function () {
         currentTime = new Date();
@@ -33,8 +31,8 @@ function Stopwatch() {
     this.start = function () {
         if (!running) {
             running = true;
-            startTime = new Date(); //if stop() has run, startTime will already exist
-            lapTime = startTime; //for first lap
+            startTime = new Date();
+            lapTime = startTime; //for first lap, see this.lap()
             timer = setInterval(this.runTimer, 1000);
         }
     };
@@ -43,7 +41,7 @@ function Stopwatch() {
         running = false;
         clearInterval(timer);
 
-        //keep seconds and minutes for resuming click on start()
+        //keep seconds and minutes for resuming this.start()
         secondsStop = parseInt(displaySeconds.innerText);
         minutesStop = parseInt(displayMinutes.innerText);
     };
@@ -80,29 +78,27 @@ function Stopwatch() {
         let items = document.querySelectorAll(".laps li");
         const lapArray = [];
 
+        // find min+sec for each .laps li and store in array
         for (let i = 0; i < items.length; i++) {
             let lapText = items[i].innerText;
-            let lapNumber = parseInt(lapText.slice(-5).replace(":", "")); //"Lap x: 01:10" becomes "01:00" becomes "0100" becomes 110
-            //console.log(lapNumber);
+            let lapNumber = parseInt(lapText.slice(-5).replace(":", "")); //"Lap 1: 01:10" becomes "01:00" becomes "0100" becomes 110
             lapArray.push(lapNumber);
         }
 
+        //store index and min+sec of shortest lap
         let shortestLap = Math.min.apply(null, lapArray);
         let shortestLapIndex = lapArray.indexOf(shortestLap);
 
+        //highlight or remove highlight for all list items
         for (let i = 0; i < items.length; i++) {
             i === shortestLapIndex ? items[i].classList.add("winner") : items[i].classList.remove("winner");
         }
     }
-
 }
 
 const stopwatch = new Stopwatch();
 
 startBtn.addEventListener('click', () => { stopwatch.start() });
-
 stopBtn.addEventListener('click', () => { stopwatch.stop() });
-
 resetBtn.addEventListener('click', () => { stopwatch.reset() });
-
 lapBtn.addEventListener('click', () => { stopwatch.lap() });
