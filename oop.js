@@ -72,6 +72,7 @@ function Stopwatch() {
 
     this.reset = function () {
         window.location.reload();
+
     }
 
     this.highlightLap = function () {
